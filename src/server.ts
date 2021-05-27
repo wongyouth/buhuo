@@ -1,7 +1,19 @@
-import fastify, { FastifyRequest, FastifyReply } from 'fastify'
+import fastify from 'fastify'
 
 export const server = fastify({ logger: true })
 
-server.get('/hello', (request: FastifyRequest, reply: FastifyReply) => {
+type Context = {
+  currentUser: string
+}
+declare module 'fastify' {
+  interface FastifyRequest {
+    ctx: Context
+  }
+}
+
+server.decorateRequest('ctx', null)
+
+server.get('/hello', (req, reply) => {
+  console.log(req.ctx)
   reply.send('world')
 })
