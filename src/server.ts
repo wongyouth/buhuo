@@ -2,11 +2,13 @@ import { config } from 'dotenv-flow'
 config()
 
 import fastify from 'fastify'
-import jwt from './plugins/jwt'
+import autoload from 'fastify-autoload'
 
 export const server = fastify({ logger: true })
 
-server.register(jwt)
+server.register(autoload, {
+  dir: __dirname + '/plugins',
+})
 
 type Context = {
   currentUser: string
