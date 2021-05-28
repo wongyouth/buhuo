@@ -20,6 +20,7 @@
     "fastify-jwt": "^2.5.0",
     "fastify-plugin": "^3.0.0",
     "fastify-print-routes": "^0.4.1",
+    "fastify-swagger": "^4.7.0",
     "json-schema-to-ts": "^1.6.4",
     "pino": "^6.11.3",
     "pino-pretty": "^5.0.0"

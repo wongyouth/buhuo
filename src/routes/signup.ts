@@ -41,6 +41,8 @@ const plugin: FastifyPluginCallback = function signUp(fastify, _opts, next) {
     '/signup',
     {
       schema: {
+        description: '用户注册',
+        tags: ['User'],
         body,
         response,
       },

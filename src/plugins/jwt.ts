@@ -10,7 +10,7 @@ declare module 'fastify-jwt' {
   }
 }
 
-const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
+const plugin: FastifyPluginCallback = (fastify, _opt, next) => {
   fastify.register(jwt, {
     secret: env.JWT_SECRET,
     formatUser: (o) => {
@@ -29,7 +29,7 @@ const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
     },
   })
 
-  done()
+  next()
 }
 
 export default fp(plugin, '3.x')

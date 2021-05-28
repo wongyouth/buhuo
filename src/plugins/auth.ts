@@ -53,11 +53,11 @@ declare module 'fastify' {
   }
 }
 
-const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
+const plugin: FastifyPluginCallback = (fastify, _opt, next) => {
   fastify.decorate('ensureUser', ensureUser)
   fastify.decorate('authorize', verifyPolicy)
 
-  done()
+  next()
 }
 
 export default fp(plugin, '3.x')
