@@ -2,11 +2,13 @@ import { config } from 'dotenv-flow'
 config()
 
 import fastify from 'fastify'
+import printRoutes from 'fastify-print-routes'
 import autoload from 'fastify-autoload'
-// import routes from './routes'
-import { logger } from './utils'
+import { logger, isDev } from './utils'
 
 export const server = fastify({ logger })
+
+if (isDev) server.register(printRoutes)
 
 server.register(autoload, {
   dir: __dirname + '/plugins',

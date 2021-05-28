@@ -1,6 +1,6 @@
 import { FastifyPluginCallback } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import { prisma, hashPassword, genToken, logger } from '../utils'
+import { prisma, hashPassword, logger } from '../utils'
 
 const body = {
   type: 'object',
@@ -51,7 +51,7 @@ const plugin: FastifyPluginCallback = function signUp(fastify, _opts, next) {
       const user = await prisma.user.create({
         data,
       })
-      const token = genToken(user)
+      const token = fastify.jwt.sign({ userId: user.id })
 
       return {
         token,
