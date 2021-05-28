@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 import { FastifyPluginCallback } from 'fastify'
 import jwt from 'fastify-jwt'
-import { JWT_SECRET } from '../env'
+import { env, logger } from '../utils'
 
 declare module 'fastify-jwt' {
   interface FastifyJWT {
@@ -12,10 +12,13 @@ declare module 'fastify-jwt' {
 
 const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
   fastify.register(jwt, {
-    secret: JWT_SECRET,
-    formatUser: (o) => ({
-      id: o.userId,
-    }),
+    secret: env.JWT_SECRET,
+    formatUser: (o) => {
+      logger.debug({ label: 'jwt' }, 'payload %o', o)
+      return {
+        id: o.userId,
+      }
+    },
     sign: { expiresIn: '90d' },
     messages: {
       badRequestErrorMessage: 'Format is Authorization: Bearer [token]',

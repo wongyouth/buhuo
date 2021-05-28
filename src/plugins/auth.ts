@@ -4,10 +4,9 @@ import {
   FastifyRequest,
   preHandlerAsyncHookHandler,
 } from 'fastify'
+import { logger } from '../utils'
 
 const ensureUser: preHandlerAsyncHookHandler = async (req, _reply) => {
-  console.log('ensureUser called')
-
   await req.jwtVerify()
 
   // TODO: load user
@@ -17,7 +16,7 @@ const ensureUser: preHandlerAsyncHookHandler = async (req, _reply) => {
     user: 'ryan',
   }
 
-  console.log('user', req.user)
+  logger.debug({ label: 'auth' }, 'ctx %o', req.ctx)
 
   if (req.user == null) throw Error('需要登录')
 }
@@ -27,7 +26,7 @@ type PolicyFun = (
   req: FastifyRequest
 ) => boolean | Promise<boolean>
 
-const policy = (fn: PolicyFun) => {
+const verifyPolicy = (fn: PolicyFun) => {
   const preHandler: preHandlerAsyncHookHandler = async (req, reply) => {
     await ensureUser(req, reply)
 
@@ -36,7 +35,7 @@ const policy = (fn: PolicyFun) => {
       result = await result
     }
 
-    console.log('result is ', result)
+    logger.debug('authorize result: %o', result)
 
     if (!result) {
       reply.status(401)
@@ -56,7 +55,7 @@ declare module 'fastify' {
 
 const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
   fastify.decorate('ensureUser', ensureUser)
-  fastify.decorate('authorize', policy)
+  fastify.decorate('authorize', verifyPolicy)
 
   done()
 }

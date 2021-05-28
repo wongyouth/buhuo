@@ -2,7 +2,7 @@ type StringEnv = Record<string, string>
 
 const defaultENV = {
   PORT: '4000',
-  REDIS_PREFIX: 'guozi:',
+  REDIS_PREFIX: 'guxi:',
   NODE_ENV: 'development',
   LOG_LEVEL: 'info',
 }
