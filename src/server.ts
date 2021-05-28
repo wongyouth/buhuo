@@ -10,8 +10,10 @@ server.register(autoload, {
   dir: __dirname + '/plugins',
 })
 
+type User = string
+
 type Context = {
-  currentUser: string
+  user: User
 }
 declare module 'fastify' {
   interface FastifyRequest {
@@ -23,18 +25,46 @@ server.decorateRequest('ctx', null)
 
 const user = { userId: 12 }
 
-server.get('/hello', (req, reply) => {
-  console.log(req.ctx)
-  reply.send('world')
-})
+server.after(routes)
 
-server.get('/signIn', (req, reply) => {
-  const token = server.jwt.sign(user)
-  reply.send({ token })
-})
+function routes() {
+  server.get('/hello', (req, reply) => {
+    console.log(req.user)
+    reply.send('world')
+  })
 
-server.get('/auth', async (req, reply) => {
-  await req.jwtVerify()
-  console.log(req.user)
-  reply.send('ok')
-})
+  server.get('/token', (req, reply) => {
+    const token = server.jwt.sign(user)
+    reply.send({ token })
+  })
+
+  server.get(
+    '/signin',
+    {
+      preHandler: server.ensureUser,
+    },
+    async (req, reply) => {
+      return 'ok'
+    }
+  )
+
+  server.get(
+    '/deny',
+    {
+      preHandler: server.authorize(() => false),
+    },
+    async (req, reply) => {
+      return 'ok'
+    }
+  )
+
+  server.get(
+    '/pass',
+    {
+      preHandler: server.authorize(() => true),
+    },
+    async (req, reply) => {
+      return 'ok'
+    }
+  )
+}

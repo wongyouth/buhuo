@@ -16,9 +16,17 @@ const plugin: FastifyPluginCallback = (fastify, _opt, done) => {
     formatUser: (o) => ({
       id: o.userId,
     }),
+    sign: { expiresIn: '90d' },
+    messages: {
+      badRequestErrorMessage: 'Format is Authorization: Bearer [token]',
+      noAuthorizationInHeaderMessage: '未提供访问令牌',
+      authorizationTokenExpiredMessage: '验证令牌已过期',
+      authorizationTokenInvalid: (err) => `验证令牌无效: ${err.message}`,
+      authorizationTokenUntrusted: 'Untrusted authorization token',
+    },
   })
 
   done()
 }
 
-export default fp(plugin)
+export default fp(plugin, '3.x')
