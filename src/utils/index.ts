@@ -1,6 +1,7 @@
 export * as env from './env'
+export * from './command'
+export * from './jwt'
 export * from './logger'
 export * from './misc'
 export * from './prisma'
 // export * from './schema'
-export * from './jwt'
