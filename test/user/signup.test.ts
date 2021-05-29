@@ -7,7 +7,12 @@ describe('用户注册', () => {
   it('foo', async () => {
     const res = await get('/hello')
 
-    expect(res).toMatchSnapshot()
+    expect(res).toMatchInlineSnapshot(`
+      Object {
+        "data": "world",
+        "status": 200,
+      }
+    `)
   })
 
   it('signup', async () => {
@@ -21,8 +26,19 @@ describe('用户注册', () => {
       smsCode,
     })
 
-    expect(res).toMatchSnapshot({
-      data: { token: expect.any(String) },
-    })
+    expect(res).toMatchInlineSnapshot(
+      {
+        data: { token: expect.any(String) },
+      },
+      `
+      Object {
+        "data": Object {
+          "token": Any<String>,
+          "userId": 1,
+        },
+        "status": 200,
+      }
+      `
+    )
   })
 })
