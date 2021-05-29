@@ -5,19 +5,8 @@ const smsCode = sms.TEST_CODE
 const mobile = '18012341234'
 
 describe('用户注册', () => {
-  it('foo', async () => {
-    const res = await get('/hello')
-
-    expect(res).toMatchInlineSnapshot(`
-      Object {
-        "data": "world",
-        "status": 200,
-      }
-    `)
-  })
-
   it('发送验证码', async () => {
-    const res = await post('/sms-code', {
+    const res = await post('/api/sms-code', {
       mobile,
     })
 
@@ -33,7 +22,7 @@ describe('用户注册', () => {
 
   it('注册成功', async () => {
     await sms.sendSms(mobile)
-    const res = await post('/signup', {
+    const res = await post('/api/signup', {
       name: 'Name',
       mobile,
       password: 'password',

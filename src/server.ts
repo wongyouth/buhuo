@@ -18,6 +18,7 @@ server.register(autoload, {
 
 server.register(autoload, {
   dir: __dirname + '/routes',
+  options: { prefix: '/api' },
 })
 
 // server.addHook('onRequest', (req, reply, next) => {
