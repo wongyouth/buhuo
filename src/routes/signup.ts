@@ -1,12 +1,14 @@
 import { FastifyPluginCallback } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import { prisma, hashPassword, logger } from '../utils'
+import { prisma, hashPassword, logger, sms } from '../utils'
 
 const body = {
   type: 'object',
   properties: {
     mobile: {
       type: 'string',
+      minLength: 11,
+      maxLength: 11,
       description: '手机号',
     },
     name: {
@@ -15,10 +17,16 @@ const body = {
     },
     password: {
       type: 'string',
+      minLength: 8,
+      maxLength: 40,
       description: '密码',
     },
+    smsCode: {
+      type: 'string',
+      description: '短信验证码',
+    },
   },
-  required: ['mobile', 'password'],
+  required: ['mobile', 'password', 'smsCode'],
   additionalProperties: false,
 } as const
 
@@ -48,11 +56,17 @@ const plugin: FastifyPluginCallback = function signUp(fastify, _opts, next) {
       },
     },
     async (req, reply) => {
-      const data = await formatData(req.body)
-      logger.debug(data)
+      logger.trace('input data: %o', req.body)
+      const { smsCode, ...data } = await formatData(req.body)
+
+      await ensureMobileNotTaken(data.mobile)
+      await ensureValidSmsCode(data.mobile, smsCode)
+
       const user = await prisma.user.create({
         data,
       })
+      logger.trace('user created: %j', user)
+
       const token = fastify.jwt.sign({ userId: user.id })
 
       return {
@@ -76,3 +90,19 @@ async function formatData(body: Body) {
 }
 
 export default plugin
+
+async function ensureMobileNotTaken(mobile: string) {
+  const isUserExist = await prisma.user.findUnique({
+    where: { mobile },
+  })
+
+  if (isUserExist) throw new Error('手机号已经存在')
+}
+
+async function ensureValidSmsCode(mobile: string, smsCode: string) {
+  const code = await sms.getVerifyCode(mobile)
+
+  if (code !== smsCode) {
+    throw new Error('验证码不匹配')
+  }
+}

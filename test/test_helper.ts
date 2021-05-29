@@ -1,20 +1,18 @@
-import axios, { AxiosRequestConfig } from 'axios'
 import { server } from '../src/server'
 
 export * as utils from '../src/utils'
 // export * as factory from './factory'
 
-import { prisma, command, logger, env } from '../src/utils'
+import { prisma, command, logger, env, redis } from '../src/utils'
 import { request } from './support'
 
 export let get: ReturnType<typeof request.get>
 export let post: ReturnType<typeof request.post>
 
-logger.debug(`env:`, env)
+logger.debug('env: %j', env)
 
 beforeAll(async () => {
   const url: string = await server.listen(0) // Random port
-  console.log('url', url)
 
   get = request.get(url)
   post = request.post(url)
@@ -23,13 +21,13 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  // redis.client.quit()
+  redis.client.quit()
   server.close()
   prisma.$disconnect()
 })
 
 function prepareRedis() {
-  // return redis.flushdb()
+  return redis.flushdb()
 }
 
 async function prepareDB() {

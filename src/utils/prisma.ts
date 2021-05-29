@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { logger } from './logger'
 import { DATABASE_URL } from './env'
 
@@ -20,7 +20,7 @@ export const prisma = new PrismaClient({
 
 prisma.$on('query', (e) => {
   const message = `${e.query} ${e.params} ${e.duration}ms`
-  logger.debug({ label: 'query' }, message)
+  logger.debug({ label: 'SQL' }, message)
 })
 
 prisma.$on('info', (e) => {

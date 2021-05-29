@@ -7,10 +7,16 @@ export type Result = {
 
 export const get =
   (baseURL: string) => async (url: string, config?: AxiosRequestConfig) => {
-    const result = await axios.get(url, {
-      ...config,
-      baseURL,
-    })
+    let result
+
+    try {
+      result = await axios.get(url, {
+        ...config,
+        baseURL,
+      })
+    } catch (err) {
+      result = err.response
+    }
 
     return {
       data: result.data,
@@ -21,10 +27,16 @@ export const get =
 export const post =
   (baseURL: string) =>
   async (url: string, data?: any, config?: AxiosRequestConfig) => {
-    const result = await axios.post(url, data, {
-      ...config,
-      baseURL,
-    })
+    let result
+
+    try {
+      result = await axios.post(url, data, {
+        ...config,
+        baseURL,
+      })
+    } catch (err) {
+      result = err.response
+    }
 
     return {
       data: result.data,

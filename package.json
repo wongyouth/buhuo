@@ -23,13 +23,15 @@
     "fastify-swagger": "^4.7.0",
     "json-schema-to-ts": "^1.6.4",
     "pino": "^6.11.3",
-    "pino-pretty": "^5.0.0"
+    "pino-pretty": "^5.0.0",
+    "redis": "^3.1.2"
   },
   "devDependencies": {
     "@types/dotenv-flow": "^3.1.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
     "@types/pino": "^6.3.8",
+    "@types/redis": "^2.8.28",
     "axios": "^0.21.1",
     "jest": "^27.0.1",
     "prisma": "^2.23.0",

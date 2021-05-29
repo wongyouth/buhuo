@@ -1,6 +1,4 @@
-import { config } from 'dotenv-flow'
-config()
-
+import './config'
 import fastify from 'fastify'
 import printRoutes from 'fastify-print-routes'
 import autoload from 'fastify-autoload'

@@ -1,10 +1,11 @@
 type StringEnv = Record<string, string>
 
 const defaultENV = {
+  JWT_SECRET: 'I09BbxowYvvUzNdARKtUHJboNKLrRvhzXePx',
+  LOG_LEVEL: 'info',
+  NODE_ENV: 'development',
   PORT: '4000',
   REDIS_PREFIX: 'guxi:',
-  NODE_ENV: 'development',
-  LOG_LEVEL: 'info',
 }
 
 const allEnv: StringEnv = {
