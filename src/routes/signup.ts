@@ -31,7 +31,7 @@ const body = {
 } as const
 
 const response = {
-  201: {
+  200: {
     type: 'object',
     properties: {
       userId: { type: 'number' },
@@ -41,8 +41,6 @@ const response = {
 } as const
 
 type Body = FromSchema<typeof body>
-
-console.log('sign up route')
 
 const plugin: FastifyPluginCallback = function signUp(fastify, _opts, next) {
   fastify.post<{ Body: Body }>(

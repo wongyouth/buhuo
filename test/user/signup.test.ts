@@ -2,6 +2,7 @@ import { get, post } from '../test_helper'
 import { sms } from '../../src/utils'
 
 const smsCode = sms.TEST_CODE
+const mobile = '18012341234'
 
 describe('用户注册', () => {
   it('foo', async () => {
@@ -15,9 +16,22 @@ describe('用户注册', () => {
     `)
   })
 
-  it('signup', async () => {
-    const mobile = '18012341234'
+  it('发送验证码', async () => {
+    const res = await post('/sms-code', {
+      mobile,
+    })
 
+    expect(res).toMatchInlineSnapshot(`
+      Object {
+        "data": Object {
+          "message": "发送成功",
+        },
+        "status": 200,
+      }
+    `)
+  })
+
+  it('注册成功', async () => {
     await sms.sendSms(mobile)
     const res = await post('/signup', {
       name: 'Name',
