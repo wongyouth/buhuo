@@ -27,13 +27,13 @@ describe('用户登录', () => {
         data: { token: expect.any(String) },
       },
       `
-Object {
-  "data": Object {
-    "token": Any<String>,
-  },
-  "status": 200,
-}
-`
+        Object {
+          "data": Object {
+            "token": Any<String>,
+          },
+          "status": 200,
+        }
+      `
     )
   })
 
@@ -49,13 +49,13 @@ Object {
         data: { token: expect.any(String) },
       },
       `
-Object {
-  "data": Object {
-    "token": Any<String>,
-  },
-  "status": 200,
-}
-`
+        Object {
+          "data": Object {
+            "token": Any<String>,
+          },
+          "status": 200,
+        }
+      `
     )
   })
 })
