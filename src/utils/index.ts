@@ -1,5 +1,6 @@
 export * as env from './env'
 export * from './command'
+export * as error from './error'
 export * from './jwt'
 export * from './logger'
 export * from './misc'
