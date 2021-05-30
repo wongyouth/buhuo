@@ -1,6 +1,8 @@
 import { FastifyPluginCallback } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import { prisma, hashPassword, logger, sms } from '../utils'
+import { prisma, hashPassword, logger, sms, error } from '../utils'
+
+const { ValidationError } = error
 
 const body = {
   type: 'object',
@@ -94,13 +96,13 @@ async function ensureMobileNotTaken(mobile: string) {
     where: { mobile },
   })
 
-  if (isUserExist) throw new Error('手机号已经存在')
+  if (isUserExist) throw new ValidationError('手机号已经存在')
 }
 
 async function ensureValidSmsCode(mobile: string, smsCode: string) {
   const code = await sms.getVerifyCode(mobile)
 
   if (code !== smsCode) {
-    throw new Error('验证码不匹配')
+    throw new ValidationError('验证码不匹配')
   }
 }

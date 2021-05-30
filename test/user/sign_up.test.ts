@@ -1,4 +1,4 @@
-import { get, post } from '../test_helper'
+import { post } from '../test_helper'
 import { sms } from '../../src/utils'
 
 const smsCode = sms.TEST_CODE
